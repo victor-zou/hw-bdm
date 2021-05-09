@@ -24,8 +24,11 @@ def register_std_func(col: str):
 @register_std_func(cst.H_INCOME)
 def std_income(df: pd.DataFrame) -> None:
     """Change "$84,835.00 " to float; then get log1p"""
-    df[cst.H_INCOME] = np.log1p(df[cst.H_INCOME].map(
-        lambda s: float(s[1:-1].replace(',', ''))).values)
+    df[cst.H_INCOME] = np.log1p(
+        df[cst.H_INCOME].map(
+            lambda s: float(s[1:-1].replace(',', '')) if isinstance(s, str) else np.nan
+        )
+    )
 
 
 @register_std_func(cst.H_DT_CUSTOMER)

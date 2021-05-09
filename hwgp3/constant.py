@@ -23,5 +23,7 @@ H_DT_CUSTOMER = 'Dt_Customer'
 H_EDUCATION = 'Education'
 H_ID = 'ID'
 H_PRED = 'Pred'
+H_RECENCY = 'Recency'
+HT_ACCEPTED_CMP = 'AcceptedCmp%d'
 
 PRED_DF_COLS = [H_ID, H_PRED]
