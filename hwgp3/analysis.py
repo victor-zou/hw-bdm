@@ -3,6 +3,14 @@ import pandas as pd
 import typing as tp
 
 
+
+class GiniStatResult(tp.NamedTuple):
+    M: int
+    pi_df: pd.DataFrame
+    """Col: l, pi_prime_l, pi_l"""
+    gini_coef: float
+
+
 class ResultAnalyser(object):
 
     def __init__(self, pred: np.ndarray, act_ret: np.ndarray):
@@ -14,9 +22,24 @@ class ResultAnalyser(object):
         self.pi = self.tot_posi / pred.size
 
     def get_top_decile_lift(self, pct_levels: tp.Iterable[int] = (1, 2, 5, 10, 20)) -> pd.DataFrame:
+        # Of course, the following code is stupid: it should be O(N)
+        # instead of O(N^2). But my finger is hurt, pardon me.
         return pd.DataFrame.from_records([
             self.get_pct_top_decile_lift(ipct) for ipct in pct_levels
         ])
+
+    def get_gini_stat(self, M: int = 40) -> GiniStatResult:
+        l = (M-1) - self.pred_rank // (self.pred_rank.size//M+1)
+        df = pd.DataFrame(dict(l=l, act_ret=self.act_ret))
+        gped = df['l'].groupby(df['act_ret']).agg(['count', 'sum'])
+        gped = gped.sort_index().reset_index()
+        gped['cum_cnt'] = gped['count'].cumsum()
+        gped['cum_posi'] = gped['sum'].cumsum()
+        gped['pi_prime_l'] = gped['cum_cnt'] / self.pred.size
+        gped['pi_l'] = gped['cum_posi'] / self.pred.size
+        pi_df = gped[['l', 'pi_prime_l', 'pi_l']]
+        gini_coef = (2/M) * (pi_df['pi_prime_l']-pi_df['pi_prime_l']).sum()
+        return GiniStatResult(M, pi_df, float(gini_coef))
 
     def get_pct_top_decile_lift(self, pct: int) -> dict:
         """"""
@@ -26,3 +49,4 @@ class ResultAnalyser(object):
         pi_p = cnt_posi / num
         lift = pi_p / self.pi
         return dict(pct=pct, pi_p=pi_p, lift=lift)
+

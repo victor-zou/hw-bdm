@@ -30,6 +30,7 @@ def df_zscore(df):
     return (df-df.mean()) / df.std()
 
 
+# f7
 def pred_is_accept(df, target):
     data = dict(r=df[cst.H_RECENCY].values)
     data['m'] = cc.sum_col(df, REG_M)
