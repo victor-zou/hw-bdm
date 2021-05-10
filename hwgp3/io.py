@@ -29,6 +29,7 @@ def std_income(df: pd.DataFrame) -> None:
             lambda s: float(s[1:-1].replace(',', '')) if isinstance(s, str) else np.nan
         )
     )
+    df[cst.H_INCOME].fillna(df[cst.H_INCOME].mean(), inplace=True)
 
 
 @register_std_func(cst.H_DT_CUSTOMER)
