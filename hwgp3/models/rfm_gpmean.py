@@ -30,7 +30,9 @@ def pred_is_accept(df, target):
     f = cc.sum_col(df, REG_F)
     gp = get_gp_id(r, m, f)
     gp_df = pd.DataFrame(dict(gp=gp, target=target))
-    gp_dict = gp_df['target'].groupby(gp_df['gp']).mean().to_dict()
+    # use groupby.transform is better
+    gp_dict = gp_df['target'].groupby(gp_df['gp']).\
+        mean().to_dict()
     pred = gp_df['gp'].map(gp_dict)
     return pd.DataFrame(
         {

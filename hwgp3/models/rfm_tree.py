@@ -22,7 +22,10 @@ def pred_is_accept(df, target):
     f = cc.sum_col(df, REG_F)
     rfm_df = pd.DataFrame(dict(r=r, m=m, f=f))
     x = rfm_df.values
-    tree = RandomForestClassifier(max_samples=0.5, oob_score=True, max_depth=2, min_samples_split=10, min_samples_leaf=5, min_impurity_decrease=0.00001)
+    tree = RandomForestClassifier(
+        max_samples=0.5, oob_score=True, max_depth=2, 
+        min_samples_split=10, min_samples_leaf=5, 
+        min_impurity_decrease=0.00001)
     est = tree.fit(x, target.astype(bool))
     pred = tree.predict_proba(x)[:,1].copy()
     print(rfm_df.columns)
