@@ -20,12 +20,17 @@ def pred_is_accept(df, target):
     data = dict(r=df[cst.H_RECENCY].values)
     data['m'] = cc.sum_col(df, REG_M)
     data['f'] = cc.sum_col(df, REG_F)
+    data['inc'] = df[cst.H_INCOME].values
+    data['yr'] = df['Year_Birth']
     data['edu'] = df[cst.H_EDUCATION].values
     data['vf'] = df['NumWebVisitsMonth'].values
     data['child'] = df['Kidhome'].values+df['Teenhome'].values
     rfm_df = pd.DataFrame(data)
     x = rfm_df.values
-    tree = RandomForestClassifier(max_samples=0.8, oob_score=True, max_depth=2, min_samples_split=15, min_samples_leaf=10, min_impurity_decrease=0.0001)
+    tree = RandomForestClassifier(
+        max_samples=0.8, oob_score=True, max_depth=2, 
+        min_samples_split=15, min_samples_leaf=10, 
+        min_impurity_decrease=0.0001)
     est = tree.fit(x, target.astype(bool))
     pred = tree.predict_proba(x)[:,1].copy()
     print(rfm_df.columns)
