@@ -23,5 +23,12 @@ def main_routine(model: md.Model):
 
 if __name__ == '__main__':
     df = io.load_df(cst.DATA_PATH)
-    model = md.get_model('rfm_logit', df)
-    main_routine(model)
+    for name in [
+        'rfm_logit', 
+        'rfm_gpmean', 
+        'f6_tree', 
+        'rfm_tree'
+    ]:
+        print(name)
+        model = md.get_model(name, df)
+        main_routine(model)

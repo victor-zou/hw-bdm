@@ -21,6 +21,7 @@ def pred_is_accept(df, target):
     rfm_df = pd.DataFrame(dict(r=r, m=m, f=f))
     x = sm.add_constant(df_zscore(rfm_df))
     est = sm.Logit(target, x).fit()
+    print(est.summary())
     pred = est.predict(x).values
     np.clip(pred, 0., 1., out=pred)
     return pd.DataFrame(

@@ -10,7 +10,7 @@ REG_M = re.compile('Mnt.*?')
 REG_F = re.compile('Num.*?Purchases')
 
 def attr_to_gp(attr):
-    rank = np.argsort(attr)
+    rank = cc.rank(attr)
     gp = rank // (int(attr.size) // N_GP + 1)
     return gp
 

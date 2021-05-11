@@ -52,7 +52,7 @@ class Model(object):
             return df
         target = self.in_df[cst.HT_ACCEPTED_CMP % 1].values.copy()
         for ii in range(2, i):
-            target += self.in_df[cst.HT_ACCEPTED_CMP % ii].values
+            target = np.maximum(target, self.in_df[cst.HT_ACCEPTED_CMP % ii].values)
         target = target * (1.0/(i-1))
         pred_df = self.impl_fun(self.in_df, target)[cst.PRED_DF_COLS]
         pred_df.to_csv(cache_f_path, index=False)

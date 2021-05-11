@@ -12,3 +12,7 @@ def sum_col(df: pd.DataFrame, reg) -> np.ndarray:
         if reg.fullmatch(col) is not None:
             result += df[col].values
     return result
+
+
+def rank(x):
+    return np.argsort(np.argsort(x))
