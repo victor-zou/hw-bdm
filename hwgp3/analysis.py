@@ -3,7 +3,6 @@ import pandas as pd
 import typing as tp
 
 
-
 class GiniStatResult(tp.NamedTuple):
     M: int
     pi_df: pd.DataFrame
@@ -31,7 +30,7 @@ class ResultAnalyser(object):
     def get_gini_stat(self, M: int = 40) -> GiniStatResult:
         l = (M-1) - self.pred_rank // (self.pred_rank.size//M+1)
         df = pd.DataFrame(dict(l=l, act_ret=self.act_ret))
-        gped = df['l'].groupby(df['act_ret']).agg(['count', 'sum'])
+        gped = df['act_ret'].groupby(df['l']).agg(['count', 'sum'])
         gped = gped.sort_index().reset_index()
         gped['cum_cnt'] = gped['count'].cumsum()
         gped['cum_posi'] = gped['sum'].cumsum()
@@ -49,4 +48,5 @@ class ResultAnalyser(object):
         pi_p = cnt_posi / num
         lift = pi_p / self.pi
         return dict(pct=pct, pi_p=pi_p, lift=lift)
+
 

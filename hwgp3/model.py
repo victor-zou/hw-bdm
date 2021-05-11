@@ -28,7 +28,7 @@ class Model(object):
         os.makedirs(self.out_dir, exist_ok=True)
         self.in_df = in_df
         self.impl_fun = impl_fun
-        self.__ram_cache = list()  # type: tp.List[int, tp.Optional[pd.DataFrame]]
+        self.__ram_cache = list()  # type: tp.List[tp.Optional[pd.DataFrame]]
 
     def get_cmp_i_pred(self, i: int) -> pd.DataFrame:
         """Calc or load from cache the pred result of i'th cmp
@@ -58,4 +58,9 @@ class Model(object):
         pred_df.to_csv(cache_f_path, index=False)
         self.__ram_cache[cache_id] = pred_df
         return pred_df
-    
+
+
+def get_model(name: str, df) -> Model:
+    from importlib import import_module
+    module = import_module(f'hwgp3.models.{name}')
+    return module.get_model(df)

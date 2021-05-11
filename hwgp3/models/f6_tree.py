@@ -1,25 +1,10 @@
-import numpy as np 
-import pandas as pd
+import numpy as np
 import re
 import hwgp3.constant as cst
 import hwgp3.model as md 
 import hwgp3.calc as cc
 np.random.seed(10)
-import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.datasets import make_classification
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import (RandomTreesEmbedding, RandomForestClassifier,
-                              GradientBoostingClassifier)
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_curve,accuracy_score,recall_score
-from sklearn.pipeline import make_pipeline
-from sklearn.calibration import calibration_curve
-import copy
-from matplotlib.colors import ListedColormap
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 
 REG_M = re.compile('Mnt.*?')
